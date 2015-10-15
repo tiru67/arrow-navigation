@@ -56,28 +56,35 @@ press.controller('searchController',function($scope,$http){
                 element.on('keydown',function(e){
                     if (e.which == 39) {
                         // Right Arrow
-                       //ask parent is there is a child in this direction, if so parent should return that child
-                        //then focus that child
-                        console.log(element[0].nextElementSibling);
                         element[0].nextElementSibling.focus();
-                    } else if (e.which == 37) {
 
-                        element[0].previousElementSibling.focus();
+                    } else if (e.which == 37) {
                         // Left Arrow
-                        //ask parent is there is a child in this direction, if so parent should return that child
-                        //then focus that child
-                    } else if (e.which == 38) {
-                        // Up Arrow
-                        //ask parent is there is a child in this direction, if so parent should return that child
-                        //then focus that child
-                    } else if (e.which == 40) {
-                        // Down Arrow
-                        //ask parent is there is a child in this direction, if so parent should return that child
-                        //then focus that child
+                        element[0].previousElementSibling.focus();
                     }else if(e.which==13){
                         //on enter execute the open link function.
                       scope.openLink(scope.image);
                     }
+                });
+
+                element.on('blur', function(e){
+                    element.removeClass('selected');
+                });
+                element.on('focus', function(e){
+                    element.addClass('selected');
+                });
+            }
+        };
+    })
+
+.directive('parentContainer', function(){
+        return{
+            restrict:'A',
+            link:function(scope, elm, atr){
+
+                elm.on('focusout', function(e){
+
+                    console.log(e);
                 });
             }
         };

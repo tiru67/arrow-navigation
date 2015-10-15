@@ -13,8 +13,8 @@
     </div>
 </form>
 
-<div>
-<div ng-if="data" class="image-style" ng-repeat="image in images track by $id(image)" id="{{$index}}" arrow-focus-child tabindex=0 ng-click="openLink(image)">
+<div tabindex="0" class="image-container" parent-container>
+<div ng-if="data" class="image-style" ng-class="{'selescted':isSelected}" ng-repeat="image in images track by $id(image)" id="{{$index}}" arrow-focus-child tabindex=0 ng-click="openLink(image)">
     <img ng-src="{{image}}&apikey=AsGd3Ib2TXOfkPL3idZ24LO0vB7ksrHa" alt="assets/spin-arrows.gif" >
 </div>
 </div>

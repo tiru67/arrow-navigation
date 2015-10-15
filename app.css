@@ -1,13 +1,13 @@
 .image-style {
     float: left;
     height:104px;
-    width:140px;
     padding: 10px;
+    margin: 10px;
 }
 
 .image-style img{
-    width: 100%;
-    height: 100%;
+    width: 90%;
+    height: 90%;
 }
 
 
@@ -34,4 +34,19 @@
 .search-class button:hover  {
     background-color:#fafafa;
     color:#207cca;
+}
+
+.selected img{
+    background-color: #fafafa;
+    border-style: inset;
+    border-color: #CA2043;
+    border-width: 5px;
+}
+
+.image-container{
+    background-color: #fafafa;
+    border-style: inset;
+    border-color: #CA2043;
+    border-width: 5px;
+    overflow: hidden;
 }
