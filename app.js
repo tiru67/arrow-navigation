@@ -40,31 +40,29 @@ press.controller('searchController',function($scope,$http){
 
     $scope.submit();
 
-})
-    .directive('arrowFocusParent', function(){
-        return{
-            restrict:'A',
-            controller:function($scope){
+    $scope.openLink = function(url){
+        window.open(url+'&apikey=AsGd3Ib2TXOfkPL3idZ24LO0vB7ksrHa','_blank');
+    };
 
-                //Here all the function or variables that will hold all the info about its children and will be help full to focus the childs according to the arrow key press.
-            }
-        };
-    })
+})
     .directive('arrowFocusChild', function(){
         return{
             restrict:'A',
-            require:'^arrowFocusParent',
             link:function(scope, element, attrs,arrowFocusParent){
 
                 element.on('focus', function(e){
                     //tell to parent using $rootScope.
                 });
-                element.on('keypress',function(e){
+                element.on('keydown',function(e){
                     if (e.which == 39) {
                         // Right Arrow
                        //ask parent is there is a child in this direction, if so parent should return that child
                         //then focus that child
+                        console.log(element[0].nextElementSibling);
+                        element[0].nextElementSibling.focus();
                     } else if (e.which == 37) {
+
+                        element[0].previousElementSibling.focus();
                         // Left Arrow
                         //ask parent is there is a child in this direction, if so parent should return that child
                         //then focus that child
@@ -76,6 +74,9 @@ press.controller('searchController',function($scope,$http){
                         // Down Arrow
                         //ask parent is there is a child in this direction, if so parent should return that child
                         //then focus that child
+                    }else if(e.which==13){
+                        //on enter execute the open link function.
+                      scope.openLink(scope.image);
                     }
                 });
             }

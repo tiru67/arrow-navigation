@@ -14,8 +14,8 @@
 </form>
 
 <div>
-<div ng-if="data" class="image-style" ng-repeat="image in images track by $id(image)" arrow-focus-parent>
-    <img ng-src="{{image}}&apikey=AsGd3Ib2TXOfkPL3idZ24LO0vB7ksrHa" alt="assets/spin-arrows.gif" tabindex=0 arrow-focus-child>
+<div ng-if="data" class="image-style" ng-repeat="image in images track by $id(image)" id="{{$index}}" arrow-focus-child tabindex=0 ng-click="openLink(image)">
+    <img ng-src="{{image}}&apikey=AsGd3Ib2TXOfkPL3idZ24LO0vB7ksrHa" alt="assets/spin-arrows.gif" >
 </div>
 </div>
 
