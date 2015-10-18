@@ -1,12 +1,14 @@
 
 var press = angular.module('Press',[]);
 
-press.controller('searchController',function($scope,$http){
+press.controller('searchController',function($scope,$http,$rootScope){
 
     $scope.images = [];
     $scope.keyword="avatar";
     $scope.data=null;
-    $scope.submit= function(){
+    $scope.images=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+
+   /* $scope.submit= function(){
 
         if($scope.keyword!==null && $scope.keyword!=="" && typeof $scope.keyword !=="undefined"){
             $http({
@@ -36,42 +38,79 @@ press.controller('searchController',function($scope,$http){
                     console.log("Error")
                 });
         }
-    };
+    };*/
 
-    $scope.submit();
+    //$scope.submit();
+    $rootScope.ctrlState=false;
+    $rootScope.$watch('ctrlState',function(newVal,oldVal){
+        $rootScope.$broadcast('ctrlState-changed');
+    });
 
     $scope.openLink = function(url){
         window.open(url+'&apikey=AsGd3Ib2TXOfkPL3idZ24LO0vB7ksrHa','_blank');
     };
 
 })
-    .directive('arrowFocusChild', function(){
+    .directive('arrowFocusChild', function($rootScope){
         return{
             restrict:'A',
-            link:function(scope, element, attrs,arrowFocusParent){
-
-                element.on('focus', function(e){
-                    //tell to parent using $rootScope.
-                });
-                element.on('keydown',function(e){
-                    if (e.which == 39) {
-                        // Right Arrow
-                        element[0].nextElementSibling.focus();
-
-                    } else if (e.which == 37) {
-                        // Left Arrow
-                        element[0].previousElementSibling.focus();
-                    }else if(e.which==13){
-                        //on enter execute the open link function.
-                      scope.openLink(scope.image);
+            scope:{
+                isSelected:'='
+            },
+            link:function(scope, element, attrs){
+                scope.isSelected=false;
+                element.on('keyup',function(e){
+                    if(e.which==17){ //ctrl key on windows.
+                        scope.$applyAsync(function(){
+                            $rootScope.ctrlState=false;
+                        });
+                    }
+                    if(e.which===91){ // command key on mac
+                        scope.$applyAsync(function(){
+                        $rootScope.ctrlState=false;});
                     }
                 });
 
+                element.on('keydown',function(e){
+
+                    if (e.which == 39) {
+                        // Right Arrow
+                        if(element[0].nextElementSibling){
+                            element[0].nextElementSibling.focus();
+                        }
+
+
+                    } else if (e.which == 37) {
+                        // Left Arrow
+                        if(element[0].previousElementSibling) {
+                            element[0].previousElementSibling.focus();
+                        }
+                    }
+
+                    if(e.which===91){
+                        $rootScope.ctrlState=true;
+                    }
+
+                });
+
                 element.on('blur', function(e){
-                    element.removeClass('selected');
+                    scope.$applyAsync(function(){
+                        if(!$rootScope.ctrlState) {
+                            scope.isSelected = false;
+                        }
+                    });
+
                 });
                 element.on('focus', function(e){
-                    element.addClass('selected');
+                    scope.$applyAsync(function(){
+                        scope.isSelected = true;
+                    });
+                });
+
+                scope.$on('ctrlState-changed', function(e){
+                    if(!$rootScope.ctrlState && element[0]!==document.activeElement) {
+                            scope.isSelected = false;
+                    }
                 });
             }
         };
