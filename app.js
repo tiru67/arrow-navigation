@@ -87,7 +87,7 @@ press.controller('searchController',function($scope,$http,$rootScope){
                         }
                     }
 
-                    if(e.which===91){
+                    if(e.which===91 || e.which===17){
                         $rootScope.ctrlState=true;
                     }
 
