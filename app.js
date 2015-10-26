@@ -68,6 +68,13 @@ press.controller('searchController',function($scope,$http,$rootScope,$document){
 
     });
 
+    $scope.$on('$destroy', function(e){
+        $document.on('keydown', function(e){
+
+        });
+
+    });
+
 })
     .directive('arrowFocusChild', function($rootScope){
         return{
