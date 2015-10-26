@@ -1,7 +1,7 @@
 
 var press = angular.module('Press',[]);
 
-press.controller('searchController',function($scope,$http,$rootScope){
+press.controller('searchController',function($scope,$http,$rootScope,$document){
 
     $scope.images = [];
     $scope.keyword="avatar";
@@ -42,13 +42,31 @@ press.controller('searchController',function($scope,$http,$rootScope){
 
     //$scope.submit();
     $rootScope.ctrlState=false;
-    $rootScope.$watch('ctrlState',function(newVal,oldVal){
+   /* $rootScope.$watch('ctrlState',function(newVal,oldVal){
         $rootScope.$broadcast('ctrlState-changed');
     });
-
-    $scope.openLink = function(url){
+*/
+  /*  $scope.openLink = function(url){
         window.open(url+'&apikey=AsGd3Ib2TXOfkPL3idZ24LO0vB7ksrHa','_blank');
-    };
+    };*/
+
+
+    $document.on('keydown', function(e){
+        if (e.which == 39 || e.which == 37) {
+            // left or right Arrow
+           // console.log(document.querySelector(":focus"));
+          /*  if(children.indexOf(document.activeElement)===-1){
+                document.getElementById('parent').firstElementChild.focus();
+            }*/
+
+            var parent =  document.getElementById('parent');
+
+            if(parent.innerHTML.indexOf(document.activeElement.innerHTML)===-1){
+                document.getElementById('parent').firstElementChild.focus();
+            }
+        }
+
+    });
 
 })
     .directive('arrowFocusChild', function($rootScope){
@@ -72,6 +90,8 @@ press.controller('searchController',function($scope,$http,$rootScope){
                 });
 
                 element.on('keydown',function(e){
+
+                    console.log(document.activeElement);
 
                     if (e.which == 39) {
                         // Right Arrow
@@ -116,14 +136,12 @@ press.controller('searchController',function($scope,$http,$rootScope){
         };
     })
 
-.directive('parentContainer', function(){
+.directive('parentContainer', function($rootScope){
         return{
             restrict:'A',
             link:function(scope, elm, atr){
-
-                elm.on('focusout', function(e){
-
-                    console.log(e);
+                elm.on('focusin', function(e){
+                 //   console.log(e);
                 });
             }
         };
