@@ -124,6 +124,10 @@ press.controller('searchController',function($scope,$http,$rootScope,$document){
                 element.on('focus', function(e){
                     scope.$applyAsync(function(){
                         scope.isSelected = true;
+
+                        if(!$rootScope.ctrlState) {
+                            $rootScope.$broadcast('ctrlState-changed');
+                        }
                     });
                 });
 
