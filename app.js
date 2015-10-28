@@ -6,8 +6,17 @@ press.controller('searchController',function($scope,$http,$rootScope,$document){
     $scope.images = [];
     $scope.keyword="avatar";
     $scope.data=null;
-    $scope.images=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+    $scope.images=[{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false},{isSelected:false}];
 
+    $scope.isSelectedCount =  function(images){
+        var selectedCount = 0;
+        angular.forEach(images, function(image){
+            if(image.isSelected){
+                selectedCount++;
+            }
+        });
+        return selectedCount;
+    };
    /* $scope.submit= function(){
 
         if($scope.keyword!==null && $scope.keyword!=="" && typeof $scope.keyword !=="undefined"){

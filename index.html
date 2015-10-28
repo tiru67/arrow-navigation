@@ -15,8 +15,9 @@
 </form>
 
 <div tabindex="0" class="image-container" parent-container id="parent">
-<div class="image-style" ng-class="{'selected':isSelected}" ng-repeat="image in images track by $id(image)" id="{{$index}}" arrow-focus-child tabindex=0 is-selected="isSelected">
-    <img src="assets/image.jpg" alt="assets/spin-arrows.gif" > {{isSelected}}
+<span>{{isSelectedCount(images)}}</span>
+    <div class="image-style"  ng-repeat="image in images track by $id(image)" id="{{$index}}"  ng-class="{'selected':image.isSelected}" arrow-focus-child tabindex=0 is-selected="image.isSelected">
+    <img src="assets/image.jpg" alt="assets/spin-arrows.gif" > {{image.isSelected}}
 </div>
 </div>
 
