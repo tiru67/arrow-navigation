@@ -120,21 +120,31 @@ press.controller('searchController',function($scope,$http,$rootScope,$document){
 
                 });
 
-                element.on('blur', function(e){
-                    scope.$applyAsync(function(){
+                //element.on('blur', function(e){
+                //    scope.$applyAsync(function(){
+                //        if(!$rootScope.ctrlState) {
+                //            scope.isSelected = false;
+                //        }
+                //    });
+                //
+                //});
+                scope.$on('image-focused',function(e, args){
+
+                    if(args.element[0]!==element[0]){
                         if(!$rootScope.ctrlState) {
                             scope.isSelected = false;
                         }
-                    });
-
+                    }
                 });
+
                 element.on('focus', function(e){
+
                     scope.$applyAsync(function(){
                         scope.isSelected = true;
-
                         if(!$rootScope.ctrlState) {
                             $rootScope.$broadcast('ctrlState-changed');
                         }
+                        $rootScope.$broadcast('image-focused',{element:element});
                     });
                 });
 
