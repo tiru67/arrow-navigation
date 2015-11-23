@@ -93,6 +93,7 @@ press.controller('searchController',function($scope,$http,$rootScope,$document){
             },
             link:function(scope, element, attrs){
                 scope.isSelected=false;
+                var isToggled = false;
                 element.on('keyup',function(e){
                     if(e.which==17){ //ctrl key on windows.
                         scope.$applyAsync(function(){
@@ -129,39 +130,40 @@ press.controller('searchController',function($scope,$http,$rootScope,$document){
 
                 });
 
-                //element.on('blur', function(e){
-                //    scope.$applyAsync(function(){
-                //        if(!$rootScope.ctrlState) {
-                //            scope.isSelected = false;
-                //        }
-                //    });
-                //
-                //});
-                scope.$on('image-focused',function(e, args){
+                element.on('focus', function(e){
+                    scope.$applyAsync(function(){
+                        scope.isSelected = !scope.isSelected;
+                        $rootScope.$broadcast('update-state',{element:element});
+                    });
+                    isToggled = true;
+                });
 
-                    if(args.element[0]!==element[0]){
-                        if(!$rootScope.ctrlState) {
-                            scope.isSelected = false;
-                        }
+                element.on('mousedown', function(e){
+                    isToggled = false;
+                });
+
+                element.on('click', function(e){
+                    if(!isToggled){
+                        scope.$applyAsync(function(){
+                            scope.isSelected = !scope.isSelected;
+                        });
                     }
                 });
 
-                element.on('focus', function(e){
-
+                element.on('blur', function(e){
                     scope.$applyAsync(function(){
-                        scope.isSelected = true;
-                        if(!$rootScope.ctrlState) {
-                            $rootScope.$broadcast('ctrlState-changed');
-                        }
-                        $rootScope.$broadcast('image-focused',{element:element});
+                        isFocused = false;
                     });
                 });
 
-                scope.$on('ctrlState-changed', function(e){
-                    if(!$rootScope.ctrlState && element[0]!==document.activeElement) {
+                scope.$on('update-state', function(e,args){
+                    if(!$rootScope.ctrlState && element!==args.element) {
                             scope.isSelected = false;
                     }
                 });
+
+
+
             }
         };
     })
