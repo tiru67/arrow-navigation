@@ -17,57 +17,12 @@ press.controller('searchController',function($scope,$http,$rootScope,$document){
         });
         return selectedCount;
     };
-   /* $scope.submit= function(){
 
-        if($scope.keyword!==null && $scope.keyword!=="" && typeof $scope.keyword !=="undefined"){
-            $http({
-                method:"GET",
-                header:{
-                    accept:"application/json"
-                },
-                url:"http://api.ap.org/v2/search/photo",
-                params:{
-                    apikey:"AsGd3Ib2TXOfkPL3idZ24LO0vB7ksrHa",
-                    q:$scope.keyword
-                }
-            })
-                .success(function(data){
-                    $scope.data=data;
-                    if(data.entries && data.entries.length){
-                        $scope.images =[];
-                        for(var i=0;i<data.entries.length;i++){
-                            if(data.entries[i].contentLinks[0].href.indexOf('http://bapi.ap.org')!==-1) {
-                                $scope.images.push(data.entries[i].contentLinks[0].href);
-                                console.log(data.entries[i].contentLinks[0].href);
-                            }
-                        }
-                    }
-                })
-                .error(function(data){
-                    console.log("Error")
-                });
-        }
-    };*/
-
-    //$scope.submit();
     $rootScope.ctrlState=false;
-   /* $rootScope.$watch('ctrlState',function(newVal,oldVal){
-        $rootScope.$broadcast('ctrlState-changed');
-    });
-*/
-  /*  $scope.openLink = function(url){
-        window.open(url+'&apikey=AsGd3Ib2TXOfkPL3idZ24LO0vB7ksrHa','_blank');
-    };*/
 
 
     $document.on('keydown', function(e){
         if (e.which == 39 || e.which == 37) {
-            // left or right Arrow
-           // console.log(document.querySelector(":focus"));
-          /*  if(children.indexOf(document.activeElement)===-1){
-                document.getElementById('parent').firstElementChild.focus();
-            }*/
-
             var parent =  document.getElementById('parent');
 
             if(parent.innerHTML.indexOf(document.activeElement.innerHTML)===-1){
@@ -94,6 +49,13 @@ press.controller('searchController',function($scope,$http,$rootScope,$document){
             link:function(scope, element, attrs){
                 scope.isSelected=false;
                 var isToggled = false;
+                scope.selectDirection = "RIGHT";
+                scope.isDirectionChanged = false;
+                var updateDirection = function(direction){
+                    scope.$applyAsync(function() {
+                        scope.selectDirection = direction;
+                    });
+                };
                 element.on('keyup',function(e){
                     if(e.which==17){ //ctrl key on windows.
                         scope.$applyAsync(function(){
@@ -108,11 +70,12 @@ press.controller('searchController',function($scope,$http,$rootScope,$document){
 
                 element.on('keydown',function(e){
 
-                    console.log(document.activeElement);
+                    //console.log(document.activeElement);
 
                     if (e.which == 39) {
                         // Right Arrow
                         if(element[0].nextElementSibling){
+                            updateDirection('RIGHT');
                             element[0].nextElementSibling.focus();
                         }
 
@@ -120,6 +83,7 @@ press.controller('searchController',function($scope,$http,$rootScope,$document){
                     } else if (e.which == 37) {
                         // Left Arrow
                         if(element[0].previousElementSibling) {
+                            updateDirection('LEFT');
                             element[0].previousElementSibling.focus();
                         }
                     }
@@ -150,30 +114,15 @@ press.controller('searchController',function($scope,$http,$rootScope,$document){
                     }
                 });
 
-                element.on('blur', function(e){
-                    scope.$applyAsync(function(){
-                        isFocused = false;
-                    });
-                });
-
                 scope.$on('update-state', function(e,args){
                     if(!$rootScope.ctrlState && element!==args.element) {
                             scope.isSelected = false;
                     }
                 });
 
+                scope.$watch('selectDirection', function(newVal, oldVal){
 
-
-            }
-        };
-    })
-
-.directive('parentContainer', function($rootScope){
-        return{
-            restrict:'A',
-            link:function(scope, elm, atr){
-                elm.on('focusin', function(e){
-                 //   console.log(e);
+                    console.log(newVal);
                 });
             }
         };
