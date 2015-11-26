@@ -42,11 +42,14 @@ press.controller('searchController',function($scope,$http,$rootScope,$document){
             link:function(scope, element, attrs){
                 scope.isSelected=false;
                 var isToggled = false;
-                scope.selectDirection = "RIGHT";
+                selectDirection = "RIGHT";
                 scope.isDirectionChanged = false;
                 var updateDirection = function(direction){
-                    scope.$applyAsync(function() {
-                        scope.selectDirection = direction;
+                        selectDirection = direction;
+                };
+                var DeSelect = function(){
+                    scope.$applyAsync(function(){
+                        scope.isSelected = false;
                     });
                 };
                 element.on('keyup',function(e){
@@ -68,6 +71,9 @@ press.controller('searchController',function($scope,$http,$rootScope,$document){
                     if (e.which == 39) {
                         // Right Arrow
                         if(element[0].nextElementSibling){
+                            if($rootScope.ctrlState && selectDirection!=='RIGHT'){
+                                DeSelect();
+                            }
                             updateDirection('RIGHT');
                             element[0].nextElementSibling.focus();
                         }
@@ -76,6 +82,9 @@ press.controller('searchController',function($scope,$http,$rootScope,$document){
                     } else if (e.which == 37) {
                         // Left Arrow
                         if(element[0].previousElementSibling) {
+                            if($rootScope.ctrlState && selectDirection!=='LEFT'){
+                                DeSelect();
+                            }
                             updateDirection('LEFT');
                             element[0].previousElementSibling.focus();
                         }
@@ -101,9 +110,7 @@ press.controller('searchController',function($scope,$http,$rootScope,$document){
 
                 element.on('click', function(e){
                     if(!isToggled){
-                        scope.$applyAsync(function(){
-                            scope.isSelected = !scope.isSelected;
-                        });
+                        toggleSelection();
                     }
                 });
 
