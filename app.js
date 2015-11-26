@@ -110,7 +110,9 @@ press.controller('searchController',function($scope,$http,$rootScope,$document){
 
                 element.on('click', function(e){
                     if(!isToggled){
-                        toggleSelection();
+                        scope.$applyAsync(function(){
+                            scope.isSelected = !scope.isSelected;
+                        });
                     }
                 });
 
@@ -118,11 +120,6 @@ press.controller('searchController',function($scope,$http,$rootScope,$document){
                     if(!$rootScope.ctrlState && element!==args.element) {
                             scope.isSelected = false;
                     }
-                });
-
-                scope.$watch('selectDirection', function(newVal, oldVal){
-
-                    console.log(newVal);
                 });
             }
         };
